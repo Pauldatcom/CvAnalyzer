@@ -46,3 +46,5 @@ modified_*.pdf
 # Node (optionnel, si vous ajoutez du JS un jour)
 # ----------------------------
 node_modules/
+
+env/
