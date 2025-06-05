@@ -53,8 +53,8 @@ st.title("🤖 Assistant RH contextuel & Offres personnalisées")
 # =============================================================================
 
 # ------------------ Injection du CSS (sans bloc vide) ------------------
-if os.path.exists("style.css"):
-    with open("style.css", "r") as f:
+if os.path.exists("frontend/style.css"):
+    with open("frontend/style.css", "r") as f:
         css_content = f.read()
     # Injecte le CSS complet sur une seule ligne pour éviter un bloc Markdown vide
     st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
