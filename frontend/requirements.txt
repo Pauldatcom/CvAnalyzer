@@ -1,26 +1,23 @@
-# Interface Streamlit
+# Interface utilisateur
 streamlit
 
-# Manipulation de PDF
+# PDF
 fpdf
 pdfplumber
 
-# Analyse IA
-mistralai
+# Appels API et environnement
 requests
-chardet
 python-dotenv
+chardet
 
-# Traitement texte / HTML (si utilisé dans parser ou scraper)
+# IA (Appels Groq ou Mistral depuis le front)
+mistralai
+
+# Traitement HTML (si tu montres ou analyses la fiche de poste côté front)
 beautifulsoup4
 
-# Si token LiveKit généré côté front
+# Token JWT pour LiveKit (vocal)
 python-jose[cryptography]
 
-# Si upload multipart fait depuis le front
+# Upload de fichiers (si tu fais un POST vers /transcribe ou /context)
 python-multipart
-
-# Pour scraping si tu utilises Playwright dans le front (à confirmer)
-playwright
-
-
