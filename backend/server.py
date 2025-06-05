@@ -33,7 +33,7 @@
 
 
 
-
+from playwright_scraper import extract_job_posting 
 from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -56,6 +56,20 @@ ffmpeg_exec = os.getenv("FFMPEG_PATH", "ffmpeg")
 
 app = FastAPI()
 
+
+@app.post("/scrape")
+async def scrape_offer(request: Request):
+    data = await request.json()
+    url = data.get("url")
+    if not url:
+        return {"error": "URL manquante"}
+    
+    try:
+        result = await extract_job_posting(url)
+        return result
+    except Exception as e:
+        return {"error": f"Erreur Playwright : {str(e)}"}
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -71,6 +85,8 @@ conversation_state = {
     "mode": "questions"
 }
 _MAX_AGE_SECONDS = 600
+
+
 
 def delete_old_temp_files():
     """
