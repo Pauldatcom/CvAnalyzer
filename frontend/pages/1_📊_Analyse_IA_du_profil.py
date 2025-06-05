@@ -1,19 +1,3 @@
-import streamlit as st
-from parser import extract_text
-import os
-import subprocess
-import json
-import sys
-import chardet
-import base64
-from dotenv import load_dotenv
-
-from groq_analyzer import analyze_cv_and_offer, generate_updated_cv, score_cv
-from cv_modifier import generate_modified_cv_pdf
-
-load_dotenv()
-
-st.set_page_config(page_title="CV & Offre Optimizer", layout="wide")
 
 # -------------------------------------------------------------------
 # Page 1 – « Analyse IA du profil »
@@ -69,6 +53,22 @@ st.set_page_config(page_title="CV & Offre Optimizer", layout="wide")
 
 
 
+import streamlit as st
+from parser import extract_text
+import os
+import json
+import requests
+import chardet
+import base64
+from dotenv import load_dotenv
+
+from groq_analyzer import analyze_cv_and_offer, generate_updated_cv, score_cv
+from cv_modifier import generate_modified_cv_pdf
+
+load_dotenv()
+
+st.set_page_config(page_title="CV & Offre Optimizer", layout="wide")
+
 # 1) Titre de la page
 st.title("🧑‍💼 Optimiseur de CV & Offres d'emploi")
 
@@ -86,7 +86,7 @@ if os.path.exists("frontend/style.css"):
 
 # 3) Barre latérale : upload du CV
 st.sidebar.header("1. Charger votre CV")
-uploaded_cv = st.sidebar.file_uploader("Importer un CV (.pdf)", type=["pdf"])
+uploaded_cv = st.sidebar.file_uploader("Importer un CV (.pdf ou .txt)", type=["pdf", "txt"])
 if uploaded_cv:
     ext = os.path.splitext(uploaded_cv.name)[1]
     orig_temp_path = f"cv_temp{ext}"
@@ -112,17 +112,12 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
         st.session_state.cv_text = ""
 
     try:
-        process = subprocess.run(
-            [sys.executable, "job_runner.py", job_url],
-            timeout=60,
-            capture_output=True,
+        response = requests.post(
+            "https://cvanalyzer-production-1322.up.railway.app/extract_job",
+            json={"url": job_url},
+            timeout=60
         )
-        encoding = chardet.detect(process.stdout)["encoding"] or "utf-8"
-        raw = process.stdout.decode(encoding).strip().replace("\u2019", "'").replace("\xa0", " ")
-        result = json.loads(raw)
-    except subprocess.TimeoutExpired:
-        st.error("Temps dépassé lors de l'extraction.")
-        result = {"error": "Timeout"}
+        result = response.json()
     except Exception as e:
         st.error(f"Erreur extraction offre : {e}")
         result = {"error": str(e)}

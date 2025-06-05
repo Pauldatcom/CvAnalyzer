@@ -140,12 +140,12 @@ if st.button("🎫 Générer le token JWT"):
         "exp": int(time.time()) + 3600,
         "video": {"roomJoin": True, "room": room_name}
     }
-    requests.post("http://localhost:8000/cleanup_temp") 
+    requests.post("https://cvanalyzer-production-1322.up.railway.app/cleanup_temp") 
     token = jwt.encode(payload, api_secret, algorithm="HS256")
     st.session_state["livekit_token"] = token
     st.success("✅ Token généré et prêt à l'emploi")
     try:
-        requests.post("http://localhost:8000/context", json={
+        requests.post("https://cvanalyzer-production-1322.up.railway.app/context", json={
             "cv": st.session_state.get("cv_text", ""),
             "offer": st.session_state.get("offer_text", ""),
             "analysis": st.session_state.get("llama_analysis", ""),
@@ -233,7 +233,7 @@ if "livekit_token" in st.session_state and sdk_js:
                     const formData = new FormData();
                     formData.append("audio", audioBlob, "voice.wav");
                     try {{
-                        const response = await fetch("http://localhost:8000/transcribe", {{ method: "POST", body: formData }});
+                        const response = await fetch("https://cvanalyzer-production-1322.up.railway.app/transcribe", {{ method: "POST", body: formData }});
                         const result = await response.json();
                         const audioUrl = result.audio_url;
                         const audioPlayer = document.getElementById("response-audio");
