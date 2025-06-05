@@ -73,7 +73,7 @@ st.set_page_config(page_title="CV & Offre Optimizer", layout="wide")
 st.title("🧑‍💼 Optimiseur de CV & Offres d'emploi")
 
 # 2) Injection du CSS principal (sur UNE seule ligne pour éviter bloc visible)
-if os.path.exists("style.css"):
+if os.path.exists("frontend/style.css"):
     with open("style.css", "r") as f:
         css_content = f.read()
     # Injecte le CSS complet
