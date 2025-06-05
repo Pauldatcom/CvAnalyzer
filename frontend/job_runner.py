@@ -9,7 +9,7 @@ import sys
 print("FICHIER EN COURS : job_runner.py", file=sys.stderr)
 import asyncio
 import json
-from frontend.playwright_scraper import extract_job_posting
+from playwright_scraper import extract_job_posting
 
 if __name__ == "__main__":
     url = sys.argv[1] if len(sys.argv) > 1 else None
