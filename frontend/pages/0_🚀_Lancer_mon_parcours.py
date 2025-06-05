@@ -8,15 +8,12 @@ st.set_page_config(page_title="🚀 Lancer mon parcours", layout="wide")
 #    - Masque les conteneurs vides de Streamlit (pour éviter marges/fond blancs).
 #    - Charge votre feuille de style (header, footer, boutons, etc.).
 
-# 1) Charge le contenu du fichier style.css dans une variable
-with open("style.css", "r") as f:
-    css_content = f.read()
 
-# 2) Injecte le CSS dans la page, sur UNE SEULE LIGNE, sans aucun espace ou retour à la ligne avant "<style>"
-st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
+style_path = os.path.join(os.path.dirname(__file__), "..", "style.css")
 
-# 3) Cache également le conteneur invisible créé par Streamlit autour de tout <style>
-st.markdown("<style>[data-testid='stElementContainer']:has(style) {display: none !important;}</style>", unsafe_allow_html=True)
+if os.path.exists(style_path):
+    with open(style_path, "r", encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 
