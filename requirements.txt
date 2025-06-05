@@ -1,0 +1,15 @@
+streamlit
+fastapi
+uvicorn
+python-dotenv
+openai-whisper
+mistralai
+edge-tts
+playwright
+beautifulsoup4
+fpdf
+pdfplumber
+python-multipart
+python-jose[cryptography]
+requests
+chardet

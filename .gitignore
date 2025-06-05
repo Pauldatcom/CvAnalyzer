@@ -1,0 +1,48 @@
+# ----------------------------
+# Python
+# ----------------------------
+__pycache__/
+*.pyc
+
+# Virtualenv
+venv/
+.venv/
+
+# Fichiers dotenv
+.env
+
+# Fichiers de log
+*.log
+
+# Dossiers VSCode
+.vscode/
+
+# Dossiers et fichiers système
+.DS_Store
+Thumbs.db
+
+# ----------------------------
+# Audio & Vidéo & PDF temporaires
+# ----------------------------
+# (On ne versionne jamais aucun .mp3 ou .wav)
+*.mp3
+*.wav
+
+# Fichiers PDF temporaires (CV générés, rapports, etc.)
+temp_*.pdf
+modified_*.pdf
+
+# ----------------------------
+# Playwright
+# ----------------------------
+.playwright/
+
+# ----------------------------
+# Streamlit cache / config
+# ----------------------------
+.streamlit/
+
+# ----------------------------
+# Node (optionnel, si vous ajoutez du JS un jour)
+# ----------------------------
+node_modules/
