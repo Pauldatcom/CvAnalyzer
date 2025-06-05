@@ -156,7 +156,7 @@ if st.button("🎫 Générer le token JWT"):
 
 # ------------------ Chargement du SDK LiveKit ------------------
 try:
-    with open("static/livekit.umd.min.js", "r", encoding="utf-8") as f:
+    with open("backend/static/livekit.umd.min.js", "r", encoding="utf-8") as f:
         sdk_js = f.read()
 except:
     sdk_js = ""
