@@ -1,5 +1,5 @@
 import streamlit as st
-from parser import extract_text
+from frontend.parser import extract_text
 import os
 import subprocess
 import json

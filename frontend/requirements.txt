@@ -1,0 +1,26 @@
+# Interface Streamlit
+streamlit
+
+# Manipulation de PDF
+fpdf
+pdfplumber
+
+# Analyse IA
+mistralai
+requests
+chardet
+python-dotenv
+
+# Traitement texte / HTML (si utilisé dans parser ou scraper)
+beautifulsoup4
+
+# Si token LiveKit généré côté front
+python-jose[cryptography]
+
+# Si upload multipart fait depuis le front
+python-multipart
+
+# Pour scraping si tu utilises Playwright dans le front (à confirmer)
+playwright
+
+
