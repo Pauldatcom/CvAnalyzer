@@ -69,6 +69,23 @@ async def scrape_offer(request: Request):
         return result
     except Exception as e:
         return {"error": f"Erreur Playwright : {str(e)}"}
+    
+@app.post("/extract_job")
+async def extract_job(request: Request):
+    """
+    Endpoint officiel pour extraire une fiche de poste (titre, entreprise, lieu, description)
+    à partir d’une URL (Welcome to the Jungle ou LinkedIn), grâce à Playwright.
+    """
+    try:
+        data = await request.json()
+        url = data.get("url")
+        if not url:
+            return {"error": "URL manquante"}
+        result = await extract_job_posting(url)
+        return result
+    except Exception as e:
+        return {"error": f"Erreur Playwright : {str(e)}"}
+
 
 app.add_middleware(
     CORSMiddleware,
