@@ -185,25 +185,25 @@ if "llama_analysis" in st.session_state and st.session_state.llama_analysis:
         st.subheader("✏️ CV mis à jour")
         st.text_area("CV revisité", updated_cv, height=350)
 
-        # try:
-        #     pdf_path = generate_modified_cv_pdf(
-        #         st.session_state.cv_text,
-        #         st.session_state.llama_analysis,
-        #         updated_cv,
-        #         st.session_state.cv_score,
-        #     )
-        #     with open(pdf_path, "rb") as f:
-        #         b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
-        #     os.remove(pdf_path)
+        try:
+            pdf_path = generate_modified_cv_pdf(
+                st.session_state.cv_text,
+                st.session_state.llama_analysis,
+                updated_cv,
+                st.session_state.cv_score,
+            )
+            with open(pdf_path, "rb") as f:
+                b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
+            os.remove(pdf_path)
 
-        #     st.markdown("#### Visualisation du CV modifié :")
-        #     pdf_view = (
-        #         f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
-        #         f'width="700" height="900"></iframe>'
-        #     )
-        #     st.markdown(pdf_view, unsafe_allow_html=True)
-        # except Exception as e:
-        #     st.error(f"Erreur PDF : {e}")
+            st.markdown("#### Visualisation du CV modifié :")
+            pdf_view = (
+                f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
+                f'width="700" height="900"></iframe>'
+            )
+            st.markdown(pdf_view, unsafe_allow_html=True)
+        except Exception as e:
+            st.error(f"Erreur PDF : {e}")
 
 # 7) Avertissement RGPD
 st.markdown(
