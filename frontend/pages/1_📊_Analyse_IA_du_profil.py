@@ -130,12 +130,22 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
         st.success("✅ Analyse terminée")
         with st.expander("📄 Aperçu du CV original"):
             with open(st.session_state.orig_pdf, "rb") as f:
-                base64_pdf = base64.b64encode(f.read()).decode("utf-8")
-                pdf_view = (
-                    f'<iframe src="data:application/pdf;base64,{base64_pdf}" '
-                    f'width="700" height="900"></iframe>'
-                )
-                st.markdown(pdf_view, unsafe_allow_html=True)
+                pdf_bytes = f.read()
+
+        st.download_button(
+            label="📄 Télécharger le CV original (PDF)",
+            data=pdf_bytes,
+            file_name="cv_original.pdf",
+            mime="application/pdf"
+        )
+
+        st.markdown("""
+        <a href="data:application/pdf;base64,{0}" target="_blank">
+        👉 Ouvrir le CV dans un nouvel onglet (si le navigateur le permet)
+        </a>
+        """.format(base64.b64encode(pdf_bytes).decode("utf-8")), unsafe_allow_html=True)
+
+
 
         st.write(f"**Poste :** {st.session_state.offer_title}  ")
         st.write(f"**Entreprise :** {st.session_state.offer_company}  ")
