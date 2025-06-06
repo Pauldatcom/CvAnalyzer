@@ -43,10 +43,10 @@ st.markdown(
 # 5) liens de navigation
 col1, col2 = st.columns(2)
 with col1:
-    st.page_link("pages/1_📊_Analyse_IA_du_profil.py", label="🔍 Analyser une offre", icon="🔍")
+    st.page_link("pages/1_📊_Analyse_IA_du_profil.py", label="Analyser votre offre", icon="🔍")
 with col2:
-    st.page_link("pages/3_🗣️_Entretien_vocal.py", label="🎧 Simulateur vocal", icon="🎧")
-    st.page_link("pages/2_🤖_Coach.py", label="💼 Offres recommandées", icon="💼")
+    st.page_link("pages/3_🗣️_Entretien_vocal.py", label="Simulateur entretien", icon="🎧")
+    st.page_link("pages/2_🤖_Coach.py", label="Votre Coach", icon="💼")
 
 # 6) Le logo en sidebar
 logo_path = "ImageProjetPython.jpeg"

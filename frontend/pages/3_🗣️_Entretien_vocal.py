@@ -130,10 +130,11 @@ def generate_transcript_pdf(history):
     return buffer
 
 # ------------------ Saisie identifiant ------------------
-identity = st.text_input("Identifiant (ex: candidat001)", value="candidat001")
+# identity = st.text_input("Identifiant (ex: candidat001)", value="candidat001")
+identity = "anonyme"
 
 # ------------------ Génération du token JWT ------------------
-if st.button("🎫 Générer le token JWT"):
+if st.button("Démarrer votre entretien vocal"):
     payload = {
         "iss": api_key,
         "sub": identity,
@@ -144,7 +145,7 @@ if st.button("🎫 Générer le token JWT"):
     requests.post("https://cvanalyzer-production-1322.up.railway.app/cleanup_temp") 
     token = jwt.encode(payload, api_secret, algorithm="HS256")
     st.session_state["livekit_token"] = token
-    st.success("✅ Token généré et prêt à l'emploi")
+    st.success("Votre Entretien vocal est prêt !")
     try:
         requests.post("https://cvanalyzer-production-1322.up.railway.app/context", json={
             "cv": st.session_state.get("cv_text", ""),
@@ -161,7 +162,7 @@ try:
         sdk_js = f.read()
 except:
     sdk_js = ""
-    st.error("❌ Fichier SDK LiveKit manquant.")
+    # st.error("❌ Fichier SDK LiveKit manquant.")
 
 # ------------------ Interface LiveKit ------------------
 if "livekit_token" in st.session_state and sdk_js:
@@ -262,13 +263,13 @@ if "livekit_token" in st.session_state and sdk_js:
     """, height=600)
 
 # ------------------ Bouton pour voir le compte-rendu ------------------
-if st.button("🗞️ Voir le compte-rendu de l'entretien"):
-    st.markdown("### Compte-rendu de la session")
-    for i, pair in enumerate(st.session_state.entretien_history, 1):
-        st.markdown(f"**{i}.** 🎤 *{pair['question']}*")
-        st.markdown(f"   🧠 *{pair['reponse']}*")
-        st.markdown("---")
-    pdf_file = generate_transcript_pdf(st.session_state.entretien_history)
-    b64 = base64.b64encode(pdf_file.read()).decode()
-    href = f'<a href="data:application/octet-stream;base64,{b64}" download="compte_rendu_entretien.pdf">📄 Télécharger le compte-rendu en PDF</a>'
-    st.markdown(href, unsafe_allow_html=True)
+# if st.button("🗞️ Voir le compte-rendu de l'entretien"):
+#     st.markdown("### Compte-rendu de la session")
+#     for i, pair in enumerate(st.session_state.entretien_history, 1):
+#         st.markdown(f"**{i}.** 🎤 *{pair['question']}*")
+#         st.markdown(f"   🧠 *{pair['reponse']}*")
+#         st.markdown("---")
+#     pdf_file = generate_transcript_pdf(st.session_state.entretien_history)
+#     b64 = base64.b64encode(pdf_file.read()).decode()
+#     href = f'<a href="data:application/octet-stream;base64,{b64}" download="compte_rendu_entretien.pdf">📄 Télécharger le compte-rendu en PDF</a>'
+#     st.markdown(href, unsafe_allow_html=True)

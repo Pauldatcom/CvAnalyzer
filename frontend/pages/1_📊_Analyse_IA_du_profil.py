@@ -203,7 +203,9 @@ if "llama_analysis" in st.session_state and st.session_state.llama_analysis:
             )
             st.markdown(pdf_view, unsafe_allow_html=True)
         except Exception as e:
-            st.error(f"Erreur PDF : {e}")
+            # st.error(f"Erreur PDF : {e}")
+            pass
+
 
 # 7) Avertissement RGPD
 st.markdown(
