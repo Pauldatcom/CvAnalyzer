@@ -52,7 +52,6 @@
 # =============================================================================
 
 
-
 import streamlit as st
 from parser import extract_text
 import os
@@ -73,16 +72,11 @@ st.set_page_config(page_title="CV & Offre Optimizer", layout="wide")
 st.title("🧑‍💼 Optimiseur de CV & Offres d'emploi")
 
 # 2) Injection du CSS principal (sur UNE seule ligne pour éviter bloc visible)
-if os.path.exists("frontend/style.css"):
-    with open("frontend/style.css", "r") as f:
+if os.path.exists("style.css"):
+    with open("style.css", "r") as f:
         css_content = f.read()
-    # Injecte le CSS complet
     st.markdown(f"<style>{css_content}</style>", unsafe_allow_html=True)
-    # Masque le conteneur vide créé autour de ce <style>
-    st.markdown(
-        "<style>[data-testid='stElementContainer']:has(style) {display:none !important;}</style>",
-        unsafe_allow_html=True,
-    )
+    st.markdown("<style>[data-testid='stElementContainer']:has(style) {display:none !important;}</style>", unsafe_allow_html=True)
 
 # 3) Barre latérale : upload du CV
 st.sidebar.header("1. Charger votre CV")
@@ -95,6 +89,7 @@ if uploaded_cv:
     try:
         st.session_state.cv_text = extract_text(orig_temp_path)
         st.session_state.orig_pdf = orig_temp_path
+        st.write("✅ CV chargé avec succès")
     except Exception as e:
         st.error(f"Erreur d'extraction du CV : {e}")
         st.session_state.cv_text = ""
@@ -105,12 +100,15 @@ job_url = st.sidebar.text_input("Coller ici le lien de l'offre (Welcome to the J
 
 # 5) Bouton Démarrer l’analyse
 if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
+    st.write("🔄 Lecture du CV...")
     try:
         st.session_state.cv_text = extract_text(st.session_state.orig_pdf)
+        st.write("✅ Texte du CV extrait")
     except Exception as e:
         st.error(f"Erreur lecture CV : {e}")
         st.session_state.cv_text = ""
 
+    st.write("🌐 Envoi de l'URL de l'offre au backend...")
     try:
         response = requests.post(
             "https://cvanalyzer-production-1322.up.railway.app/extract_job",
@@ -118,6 +116,7 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
             timeout=60
         )
         result = response.json()
+        st.write("🟢 Réponse backend :", result)
     except Exception as e:
         st.error(f"Erreur extraction offre : {e}")
         result = {"error": str(e)}
@@ -148,6 +147,7 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
                     st.session_state.cv_text,
                     st.session_state.offer_text,
                 )
+                st.write("✅ Analyse IA terminée")
             except Exception as e:
                 st.error(f"Erreur analyse IA : {e}")
                 st.session_state.llama_analysis = None
@@ -163,18 +163,20 @@ if "llama_analysis" in st.session_state and st.session_state.llama_analysis:
                 st.session_state.cv_text,
                 st.session_state.offer_text,
             )
+            st.write(f"**Score de compatibilité du CV :** {st.session_state.cv_score}/100")
         except Exception as e:
             st.error(f"Erreur score : {e}")
             st.session_state.cv_score = 0
 
-    st.write(f"**Score de compatibilité du CV :** {st.session_state.cv_score}/100")
-
     with st.spinner("Réécriture intelligente du CV..."):
         try:
+            # Ajout d'une contrainte explicite pour forcer la langue française
+            st.session_state.llama_analysis += "\n\nIMPORTANT : Réécris le CV uniquement en français, sans aucune partie en anglais."
             updated_cv = generate_updated_cv(
                 st.session_state.cv_text,
                 st.session_state.llama_analysis,
             )
+            st.write("✅ Réécriture du CV réussie")
         except Exception as e:
             st.error(f"Erreur lors de la réécriture : {e}")
             updated_cv = None
@@ -191,7 +193,7 @@ if "llama_analysis" in st.session_state and st.session_state.llama_analysis:
                 st.session_state.cv_score,
             )
             with open(pdf_path, "rb") as f:
-                b64_pdf = base64.b64encode(f.read()).decode("utf-8")
+                b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
             os.remove(pdf_path)
 
             st.markdown("#### Visualisation du CV modifié :")
