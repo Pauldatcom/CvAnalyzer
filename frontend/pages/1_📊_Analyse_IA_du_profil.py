@@ -148,8 +148,8 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
 
 
         st.write(f"**Poste :** {st.session_state.offer_title}  ")
-        st.write(f"**Entreprise :** {st.session_state.offer_company}  ")
-        st.write(f"**Lieu :** {st.session_state.offer_location}")
+        # st.write(f"**Entreprise :** {st.session_state.offer_company}  ")
+        # st.write(f"**Lieu :** {st.session_state.offer_location}")
 
         with st.spinner("Analyse IA avec LLaMA 3 en cours..."):
             try:
@@ -202,16 +202,16 @@ if "llama_analysis" in st.session_state and st.session_state.llama_analysis:
                 updated_cv,
                 st.session_state.cv_score,
             )
-            with open(pdf_path, "rb") as f:
-                b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
-            os.remove(pdf_path)
+            # with open(pdf_path, "rb") as f:
+            #     b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
+            # os.remove(pdf_path)
 
-            st.markdown("#### Visualisation du CV modifié :")
-            pdf_view = (
-                f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
-                f'width="700" height="900"></iframe>'
-            )
-            st.markdown(pdf_view, unsafe_allow_html=True)
+            # st.markdown("#### Visualisation du CV modifié :")
+            # pdf_view = (
+            #     f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
+            #     f'width="700" height="900"></iframe>'
+            # )
+            # st.markdown(pdf_view, unsafe_allow_html=True)
         except Exception as e:
             # st.error(f"Erreur PDF : {e}")
             pass
