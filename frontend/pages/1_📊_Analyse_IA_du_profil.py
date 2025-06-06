@@ -122,10 +122,10 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
         result = {"error": str(e)}
 
     if result and not result.get("error"):
-        # st.session_state.offer_text = result.get("description", "")
-        # st.session_state.offer_title = result.get("title", "")
-        # st.session_state.offer_company = result.get("company", "")
-        # st.session_state.offer_location = result.get("location", "")
+        st.session_state.offer_text = result.get("description", "")
+        st.session_state.offer_title = result.get("title", "")
+        st.session_state.offer_company = result.get("company", "")
+        st.session_state.offer_location = result.get("location", "")
 
         st.success("✅ Analyse terminée")
         with st.expander("📄 Aperçu du CV original"):
