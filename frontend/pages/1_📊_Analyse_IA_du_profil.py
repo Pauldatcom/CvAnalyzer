@@ -89,7 +89,7 @@ if uploaded_cv:
     try:
         st.session_state.cv_text = extract_text(orig_temp_path)
         st.session_state.orig_pdf = orig_temp_path
-        st.write("✅ CV chargé avec succès")
+        # st.write("✅ CV chargé avec succès")
     except Exception as e:
         st.error(f"Erreur d'extraction du CV : {e}")
         st.session_state.cv_text = ""
@@ -100,15 +100,15 @@ job_url = st.sidebar.text_input("Coller ici le lien de l'offre (Welcome to the J
 
 # 5) Bouton Démarrer l’analyse
 if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
-    st.write("🔄 Lecture du CV...")
+    # st.write("🔄 Lecture du CV...")
     try:
         st.session_state.cv_text = extract_text(st.session_state.orig_pdf)
-        st.write("✅ Texte du CV extrait")
+        # st.write("✅ Texte du CV extrait")
     except Exception as e:
         st.error(f"Erreur lecture CV : {e}")
         st.session_state.cv_text = ""
 
-    st.write("🌐 Envoi de l'URL de l'offre au backend...")
+    # st.write("🌐 Envoi de l'URL de l'offre au backend...")
     try:
         response = requests.post(
             "https://cvanalyzer-production-1322.up.railway.app/extract_job",
@@ -116,16 +116,16 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
             timeout=60
         )
         result = response.json()
-        st.write("🟢 Réponse backend :", result)
+        # st.write("🟢 Réponse backend :", result)
     except Exception as e:
         st.error(f"Erreur extraction offre : {e}")
         result = {"error": str(e)}
 
     if result and not result.get("error"):
-        st.session_state.offer_text = result.get("description", "")
-        st.session_state.offer_title = result.get("title", "")
-        st.session_state.offer_company = result.get("company", "")
-        st.session_state.offer_location = result.get("location", "")
+        # st.session_state.offer_text = result.get("description", "")
+        # st.session_state.offer_title = result.get("title", "")
+        # st.session_state.offer_company = result.get("company", "")
+        # st.session_state.offer_location = result.get("location", "")
 
         st.success("✅ Analyse terminée")
         with st.expander("📄 Aperçu du CV original"):
@@ -147,7 +147,7 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
                     st.session_state.cv_text,
                     st.session_state.offer_text,
                 )
-                st.write("✅ Analyse IA terminée")
+                # st.write("✅ Analyse IA terminée")
             except Exception as e:
                 st.error(f"Erreur analyse IA : {e}")
                 st.session_state.llama_analysis = None
@@ -176,34 +176,34 @@ if "llama_analysis" in st.session_state and st.session_state.llama_analysis:
                 st.session_state.cv_text,
                 st.session_state.llama_analysis,
             )
-            st.write("✅ Réécriture du CV réussie")
+            # st.write("✅ Réécriture du CV réussie")
         except Exception as e:
             st.error(f"Erreur lors de la réécriture : {e}")
             updated_cv = None
 
     if updated_cv:
-        st.subheader("✏️ CV mis à jour par l'IA")
+        st.subheader("✏️ CV mis à jour")
         st.text_area("CV revisité", updated_cv, height=350)
 
-        try:
-            pdf_path = generate_modified_cv_pdf(
-                st.session_state.cv_text,
-                st.session_state.llama_analysis,
-                updated_cv,
-                st.session_state.cv_score,
-            )
-            with open(pdf_path, "rb") as f:
-                b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
-            os.remove(pdf_path)
+        # try:
+        #     pdf_path = generate_modified_cv_pdf(
+        #         st.session_state.cv_text,
+        #         st.session_state.llama_analysis,
+        #         updated_cv,
+        #         st.session_state.cv_score,
+        #     )
+        #     with open(pdf_path, "rb") as f:
+        #         b64_pdf = base64.b64encode(f.read()).decode("utf-8", errors="ignore")
+        #     os.remove(pdf_path)
 
-            st.markdown("#### Visualisation du CV modifié :")
-            pdf_view = (
-                f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
-                f'width="700" height="900"></iframe>'
-            )
-            st.markdown(pdf_view, unsafe_allow_html=True)
-        except Exception as e:
-            st.error(f"Erreur PDF : {e}")
+        #     st.markdown("#### Visualisation du CV modifié :")
+        #     pdf_view = (
+        #         f'<iframe src="data:application/pdf;base64,{b64_pdf}" '
+        #         f'width="700" height="900"></iframe>'
+        #     )
+        #     st.markdown(pdf_view, unsafe_allow_html=True)
+        # except Exception as e:
+        #     st.error(f"Erreur PDF : {e}")
 
 # 7) Avertissement RGPD
 st.markdown(
