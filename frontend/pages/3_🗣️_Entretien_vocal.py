@@ -3,7 +3,7 @@ import streamlit.components.v1 as components
 from jose import jwt
 import time
 from fpdf import FPDF
-import io
+from io import BytesIO
 import base64
 import requests
 import os
@@ -121,11 +121,12 @@ def generate_transcript_pdf(history):
     pdf.cell(0, 10, "Compte-rendu de l'entretien vocal", ln=True, align="C")
     pdf.ln(10)
     for i, item in enumerate(history, 1):
-        pdf.multi_cell(0, 10, f"{i}. Question : {item['question']}\n   Réponse IA : {item['reponse']}\n")
+        pdf.multi_cell(0, 10, f"{i}. Question : {item['question']}\n   Réponse IA : {item['reponse']}")
         pdf.ln(4)
-    buffer = io.BytesIO()
-    pdf.output(buffer)
-    buffer.seek(0)
+    
+    # Génère une chaîne binaire et encode dans BytesIO
+    pdf_bytes = pdf.output(dest="S").encode("latin-1")
+    buffer = BytesIO(pdf_bytes)
     return buffer
 
 # ------------------ Saisie identifiant ------------------

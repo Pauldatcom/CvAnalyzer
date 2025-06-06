@@ -37,6 +37,7 @@ from playwright_scraper import extract_job_posting
 from fastapi import FastAPI, UploadFile, File, Request
 from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi import Request
 import uuid
 import whisper
 import os
@@ -70,21 +71,23 @@ async def scrape_offer(request: Request):
     except Exception as e:
         return {"error": f"Erreur Playwright : {str(e)}"}
     
+from fastapi import Request
+
 @app.post("/extract_job")
 async def extract_job(request: Request):
-    """
-    Endpoint officiel pour extraire une fiche de poste (titre, entreprise, lieu, description)
-    à partir d’une URL (Welcome to the Jungle ou LinkedIn), grâce à Playwright.
-    """
+    from playwright_scraper import extract_job_posting
+    import asyncio
+
+    data = await request.json()
+    url = data.get("url")
+    if not url:
+        return {"error": "URL manquante"}
     try:
-        data = await request.json()
-        url = data.get("url")
-        if not url:
-            return {"error": "URL manquante"}
-        result = await extract_job_posting(url)
-        return result
+        job = await extract_job_posting(url)
+        return job
     except Exception as e:
-        return {"error": f"Erreur Playwright : {str(e)}"}
+        return {"error": str(e)}
+
 
 
 app.add_middleware(
