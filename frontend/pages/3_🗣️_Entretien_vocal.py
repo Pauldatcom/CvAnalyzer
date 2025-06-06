@@ -189,9 +189,7 @@ if "livekit_token" in st.session_state and sdk_js:
             var client = window.LivekitClient || window.LiveKit || (window.LivekitClient && window.LivekitClient.default);
             if (!client) {{
                 document.getElementById("status").innerText = "❌ SDK LiveKit non chargé.";
-                console.error("❌ LiveKit SDK non accessible.");
             }} else {{
-                console.log("✅ SDK LiveKit détecté :", client);
                 window.clientLiveKit = client;
                 LiveKitLoaded = true;
             }}
@@ -201,14 +199,10 @@ if "livekit_token" in st.session_state and sdk_js:
             try {{
                 const token = "{st.session_state['livekit_token']}";
                 const url = "{livekit_url}";
-                console.log("🔑 Token utilisé :", token);
-                console.log("🌐 Connexion à :", url);
                 const room = new LivekitClient.Room();
 
-                console.log("✅ Connecté !", room);
                 document.getElementById("status").innerText = "✅ Connecté à la salle";
             }} catch (err) {{
-                console.error("❌ Connexion échouée :", err);
                 document.getElementById("status").innerText = "❌ Connexion échouée : " + err.message;
             }}
         }}
