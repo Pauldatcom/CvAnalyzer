@@ -127,7 +127,7 @@ if job_url and uploaded_cv and st.sidebar.button("🚀 Démarrer l'analyse"):
         st.session_state.offer_company = result.get("company", "")
         st.session_state.offer_location = result.get("location", "")
 
-        st.success("✅ Analyse terminée")
+        # st.success("✅ Analyse terminée")
         with st.expander("📄 Aperçu du CV original"):
             with open(st.session_state.orig_pdf, "rb") as f:
                 pdf_bytes = f.read()
